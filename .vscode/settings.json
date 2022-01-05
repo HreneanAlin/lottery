@@ -1,0 +1,7 @@
+{
+    "solidity.remappings": [
+        "@chainlink/=/Users/alinhrenean/.brownie/packages/smartcontractkit/chainlink-brownie-contracts@0.3.0",
+        "@openzeppelin/=/Users/alinhrenean/.brownie/packages/OpenZeppelin/openzeppelin-contracts@3.4.0"
+    ],
+    "solidity.compileUsingRemoteVersion": "v0.7.4+commit.3f05b770"
+}
