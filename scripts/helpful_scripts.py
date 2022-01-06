@@ -1,4 +1,11 @@
-from brownie import accounts, network, config
+from brownie import (
+    accounts,
+    network,
+    config,
+    MockV3Aggregator,
+    Contract,
+    VRFCoordinatorMock,
+)
 
 LOCAL_BLOCKCHAIN_ENVIRONMENTS = ["development", "ganache-local"]
 FORKED_LOCAL_ENVIRONMENTS = ["mainnet-fork", "mainnet-fork-dev"]
@@ -21,5 +28,34 @@ def get_account(index=None, id=None):
     return accounts.add(config["wallets"]["from_key"])
 
 
-def get_contract():
-    pass
+contract_to_mock = {
+    "eth_usd_price_feed": MockV3Aggregator,
+    "vrf_coordinator": VRFCoordinatorMock,
+}
+
+DECIMALS = 8
+INITIAL_VALUE = 200_000_000_000
+
+
+def deploy_mocks(decimals=DECIMALS, initial_value=INITIAL_VALUE):
+    account = get_account()
+    MockV3Aggregator.deploy(decimals, initial_value, {"from": account})
+    print("Deployed")
+
+
+def get_contract(contract_name):
+    """
+    this function will grap the contract from the
+    brownie config if defined or it will deploy a mock version
+    """
+    contract_type = contract_to_mock[contract_name]
+    if network.show_active() in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+        if len(contract_type) <= 0:
+            deploy_mocks()
+        contract = contract_type[-1]
+    else:
+        contract_address = config["networs"][network.show_active()][contract_name]
+        contract = Contract.from_abi(
+            contract_type._name, contract_address, contract_type.abi
+        )
+    return contract

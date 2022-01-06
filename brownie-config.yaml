@@ -3,7 +3,7 @@ dependencies:
   - OpenZeppelin/openzeppelin-contracts@3.4.0
 compiler:
   solc:
-    version: "0.7.4"
+    version: "0.6.6"
     remappings:
       - "@chainlink=smartcontractkit/chainlink-brownie-contracts@0.3.0"
       - "@openzeppelin=OpenZeppelin/openzeppelin-contracts@3.4.0"
@@ -12,6 +12,7 @@ networks:
   default: development
   rinkeby:
     eth_usd_price_feed: "0x8A753747A1Fa494EC906cE90E9f37563A8AF630e"
+    vrf_coordinator: "0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B"
     verify: True
   mainnet-fork-dev:
     eth_usd_price_feed: "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419"
